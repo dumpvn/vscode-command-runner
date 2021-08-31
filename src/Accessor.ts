@@ -9,7 +9,7 @@
 
 /**
  *****************************************
- * 加载依赖
+ * load dependencies / import libraries
  *****************************************
  */
 import * as vscode from 'vscode';
@@ -18,7 +18,7 @@ import variable from './helpers/variable';
 
 /**
  *****************************************
- * 变量名
+ * variables
  *****************************************
  */
 export const variableMap = {
@@ -45,7 +45,7 @@ export const variableMap = {
 
 /**
  *****************************************
- * 变量类型
+ * variable type
  *****************************************
  */
 export type VariableScope = keyof typeof variableMap;
@@ -53,45 +53,45 @@ export type VariableScope = keyof typeof variableMap;
 
 /**
  *****************************************
- * 存取器
+ * Accessor
  *****************************************
  */
 export default class Accessor {
 
-    /* 变量缓存对象 */
+    /* variable cache object */
     private $variable = variable();
 
-    /* 获取环境变量 */
+    /* get environment variable */
     env(scope: string): string {
         return this.$variable.env()[scope.toUpperCase()] || '';
     }
 
-    /* 获取配置 */
+    /* get configuration */
     config<T = unknown>(scope: string): T | undefined {
         return this.$variable.config().get(scope);
     }
 
-    /* 获取包配置 */
+    /* get package configuration */
     package<T = unknown>(scope: string): T | undefined {
         return this.$variable.package()[scope] as T;
     }
 
-    /* 获取变量 */
+    /* get variables */
     variable(scope: VariableScope): string {
         return variableMap[scope] === 1 ? this.$variable[scope]() : '';
     }
 
-    /* 获取命令 */
+    /* get command */
     command(name: string): string {
         return this.$variable.commands()[name] || name;
     }
 
-    /* 获取命令集 */
+    /* get command set */
     commands(): Record<string, string> {
         return this.$variable.commands();
     }
 
-    /* 获取输入 */
+    /* get input */
     input(value: string): Thenable<string | undefined> {
         return vscode.window.showInputBox({ placeHolder: value && `default: "${value}"` });
     }
